@@ -25,6 +25,7 @@
 """
 
 import subprocess
+import sys
 import os
 from .libkas import kasplugin
 from .context import create_global_context
@@ -133,5 +134,6 @@ class ShellCommand(Command):
         if self.cmd:
             cmd.append('-c')
             cmd.append(self.cmd)
-        subprocess.call(cmd, env=ctx.environ,
-                        cwd=ctx.build_dir)
+        result = subprocess.call(cmd, env=ctx.environ, cwd=ctx.build_dir)
+        if result != 0:
+            sys.exit(result)
